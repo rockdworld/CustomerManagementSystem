@@ -1,0 +1,28 @@
+services:
+  customer.api:
+    build:
+      context: D:\Manish\Croma\Projects\CustomerManagementSystem
+      dockerfile: Customer.API/Dockerfile
+    container_name: customer.api
+    depends_on:
+      mongodb:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DatabaseSettings:ConnectionString: mongodb://mongodb:27017
+    image: customerapi
+    ports:
+    - published: 5000
+      target: 80
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    ports:
+    - published: 27017
+      target: 27017
+    restart: always
+    volumes:
+    - mongo_data:/data/db:rw
+version: '3.4'
+volumes:
+  mongo_data: {}
